@@ -44,7 +44,8 @@ class Kostenstammdaten_Elektro(models.Model):
     def __str__(self):
         return self
 
-    def getEinheitspreis()
+    def getEinheitspreis():
+        return 
 
 class Kostenstammdaten_HLKS_Abgabe(models.Model):
     einheitspreis_pro_m2 = float
