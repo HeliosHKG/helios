@@ -76,6 +76,5 @@ class Input_Investitionskosten(models.Model):
     einheitspreis_pro_m2_hlks_erzeugung = ForeignKey(Kostenstammdaten_HLKS_Erzeugung,on_delete=CASCADE)
 
     def __init__(self):
-        self.einheitspreis_pro_m2_elektro = 
         return self
 
