@@ -1,0 +1,108 @@
+Skip to content
+Search or jump to…
+Pulls
+Issues
+Marketplace
+Explore
+
+@Gilijar
+Gilijar
+/
+Boralus
+Private
+1
+00
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+More
+Boralus/boralus/templates/projekt/dashboard_projekt_create.html
+@Gilijar
+Gilijar Projekt initial
+Latest commit d1841ce 19 days ago
+History
+1 contributor
+65 lines (48 sloc) 1.99 KB
+
+{% extends "layouts/base.html" %}
+{% load bootstrap4 %}
+{% block title %} Form validation {% endblock %}
+
+{% block stylesheets %}
+
+<!-- Specific CSS goes HERE -->
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Projekt erstellen</h5>
+                                </div>
+
+
+                                <!-- [ Form Validation ] start -->
+                                <div>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% bootstrap_form form %}
+                                        {% buttons %}
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        {% endbuttons %}
+
+                                    </form>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Form Validation ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+
+</section>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+<!-- jquery-validation Js -->
+<script src="/static/assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<!-- form-picker-custom Js -->
+<script src="/static/assets/js/pages/form-validation.js"></script>
+
+{% endblock javascripts %}
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete

@@ -17,7 +17,7 @@ urlpatterns = [
     path("users/", include("helios.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path ("project/", include ("helios.project.urls")), 
+    path ("project/", include ("helios.projekt.urls")), 
     path ("vorstudie/", include ("helios.vorstudie.urls")),
     
     

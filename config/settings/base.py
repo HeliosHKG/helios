@@ -73,7 +73,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "helios.users.apps.UsersConfig",
-    "helios.project.apps.ProjectConfig",
+    "helios.projekt.apps.ProjektConfig",
     "helios.vorstudie.apps.VorstudieConfig",
     # Your stuff: custom apps go here
 ]
