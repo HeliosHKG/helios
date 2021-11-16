@@ -1,14 +1,15 @@
 from django.db import models
 from django.db.models.fields import CharField, IntegerField, TextField
+from django.db.models.fields.related import ForeignKey
+from helios.users.models import User
 
-# Create your models here.
 
 
 class Projekt (models.Model):
     projekt_name = CharField(max_length=50)
     projekt_nummer = IntegerField()
     projekt_beschreibung = TextField()
-    
+    projekt_ersteller = models.ForeignKey(User , on_delete=models.CASCADE, null=True, blank=True)
     
     def __init__ (self):
         return self.projekt_name 

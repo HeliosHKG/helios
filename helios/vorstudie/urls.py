@@ -1,13 +1,13 @@
 from django.urls import path
 
 
-from helios.project.views import (
-    vorstudie_detail_view,
+from .views import (
+    vorstudie_view,
     
 )
 
 app_name = "vorstudie"
 urlpatterns = [
-    path("dashboard_vorstudie/", view=vorstudie_detail_view, name="dashboard-project"),
+    path("dashboard_vorstudie/", view=vorstudie_view, name="dashboard-project"),
     
 ]

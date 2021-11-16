@@ -3,7 +3,7 @@ from django.views import generic
 from .models import Projekt
 
 
-class PorjectView(generic.Templateview):
+class PorjectView(generic.View):
 
     model = Projekt
 
@@ -14,4 +14,4 @@ class PorjectView(generic.Templateview):
         
         return super(PorjectView).get_queryset()
     
- 
+project_view = PorjectView.as_view()
