@@ -9,6 +9,8 @@ class PorjectView(generic.Templateview):
 
     def get_queryset(self):
         
+        query = "Test"
+        
         
         return super(PorjectView).get_queryset()
     
