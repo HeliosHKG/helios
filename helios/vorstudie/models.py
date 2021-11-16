@@ -4,7 +4,7 @@ from django.db.models.fields.related import ForeignKey
 
 from helios.project.models import Projekt
 
-from .models import project 
+from .models import Projekt 
 
 
 class Vorstudie (models.Model):

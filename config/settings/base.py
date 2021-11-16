@@ -73,8 +73,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "helios.users.apps.UsersConfig",
-    "helios.projekt.apps.UserConfig",
-    "helios.vorstudie.apps.UserConfig",
+    "helios.project.apps.ProjectConfig",
+    "helios.vorstudie.apps.VorstudieConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

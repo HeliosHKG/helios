@@ -1,3 +1,15 @@
 from django.shortcuts import render
+from django.views import generic
+from .models import Projekt
 
-# Create your views here.
+
+class PorjectView(generic.Templateview):
+
+    model = Projekt
+
+    def get_queryset(self):
+        
+        
+        return super(PorjectView).get_queryset()
+    
+ 
