@@ -12,7 +12,7 @@ from .forms import ProjektModelForm
 class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
     template_name = "projekt/dashboard_projekt_create.html"
     form_class = ProjektModelForm   
-    success_message = _("Projekt erstellt")
+    
     
     def form_valid(self, form):     
         projekt = form.save(commit=False)
@@ -35,30 +35,32 @@ class ProjektListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self): # Suchfunktion und wenn keine Suche zeigt alle Daten an
         
         query = self.request.GET.get('q')
-        print (query)
+        
         if query == None:
-            object_list = Projekt.objects.all().order_by('-projekt_created') 
+            object_list = Projekt.objects.all()
             return object_list
         else:
             object_list = Projekt.objects.filter(
                 Q(projekt_name__icontains=query) | Q(projekt_nummer__icontains=query) 
-            ).order_by('-projekt_created')
+            )
             return object_list
 
 projekt_list_view = ProjektListView.as_view() 
 
-class ProjektDetailView(LoginRequiredMixin, generic.DetailView):
-    template_name = "projekt/dashboard_projekt_detail.html"
-    context_object_name = "projekt"
+# Eventuell wird dies noch benötigt
+
+# class ProjektDetailView(LoginRequiredMixin, generic.DetailView):
+#     template_name = "projekt/dashboard_projekt_detail.html"
+#     context_object_name = "projekt"
     
-    def get_queryset(self):
+#     def get_queryset(self):
         
-        user = self.request.user
-        queryset = Projekt.objects.filter(projekt_ersteller=user)
+#         user = self.request.user
+#         queryset = Projekt.objects.filter(projekt_ersteller=user)
         
-        return queryset
+#         return queryset
     
-projekt_detail_view = ProjektDetailView.as_view() 
+# projekt_detail_view = ProjektDetailView.as_view() 
     
 class ProjektUpdateView(LoginRequiredMixin, generic.UpdateView, SuccessMessageMixin):
     template_name = "projekt/dashboard_projekt_update.html"
@@ -83,7 +85,7 @@ projekt_update_view = ProjektUpdateView.as_view()
 
 class ProjektDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "projekt/dashboard_projekt_delete.html"
-    # because we are organisor
+    
     def get_success_url(self):
         return reverse("projekt:list-projekt")
 
