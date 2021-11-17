@@ -12,7 +12,9 @@ from .models import (
     ProjektBranche, 
     ProjektArt, 
     ProjektNutzung,
+    ProjektSpezifikationen,
     Raumnutzung,
+    Stammdaten_Technickzentralen_Elektro,
 )
 
 admin.site.register(ProjektPhase)
@@ -27,3 +29,5 @@ admin.site.register(Gewerk2)
 admin.site.register(Gewerk)
 admin.site.register(Erzeugungstyp)
 admin.site.register(Klassifizierung)
+admin.site.register(ProjektSpezifikationen)
+admin.site.register(Stammdaten_Technickzentralen_Elektro)

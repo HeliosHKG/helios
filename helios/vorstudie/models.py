@@ -80,30 +80,14 @@ class Technikflaechen(models.Model):
 
 class Leistung(models.Model):
     projekt = ForeignKey(Projekt, on_delete=SET_NULL, null=True)
-    klassifizierung = ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
-    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
-    leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField()
-    luftwechsel_pro_Person_Klassifizierung = FloatField()
-    flaeche_pro_Personenanzahl_Klassifizierung = FloatField()
-    raumtemparatur_Klassifizierung = FloatField()
+    klassifizierung = ForeignKey(Klassifizierung, on_delete=SET_NULL, blank=True, null=True)
+    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, blank=True, null=True)
+    leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField(blank=True, null=True)
+    luftwechsel_pro_Person_Klassifizierung = FloatField(blank=True, null=True)
+    flaeche_pro_Personenanzahl_Klassifizierung = FloatField(blank=True, null=True)
+    raumtemparatur_Klassifizierung = FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.projekt or ''
+        return str(self.leistung_pro_m2_Klassifizierung_Gewerk2)
 
-    def getTechnickflaeche(self):
 
-        projekt_pk = self.projekt
-        projektSpezifikationen: ProjektSpezifikationen = ProjektSpezifikationen.objects.get(projekt_name=projekt_pk)
-        raumflaeche = projektSpezifikationen.projekt_raumflaeche
-
-        return raumflaeche * self.leistung_pro_m2_Klassifizierung_Gewerk2
-
-    def __init__(self):
-        print ("funktioniert")
-        projekt_pk = self.projekt
-        print (projekt_pk)
-        projektSpezifikationen: ProjektSpezifikationen = ProjektSpezifikationen.objects.get(projekt_name=projekt_pk)
-        a:Nutzungsstammdaten_SIA2024=Nutzungsstammdaten_SIA2024.objects.filter(klassifizierung=self.klassifizierung, gewerk2=self.gewerk2, raumnutzung=projektSpezifikationen.projekt_raumnutzung)
-        self.leistung_pro_m2_Klassifizierung_Gewerk2 = a.leistung_pro_m2_Klassifizierung_Gewerk2
-        print ("leistung pro m2"+self.leistung_pro_m2_Klassifizierung_Gewerk2)
-        return self

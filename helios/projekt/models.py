@@ -130,7 +130,7 @@ class ProjektSpezifikationen(models.Model):
     projekt_raumhoehe = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.projekt_name or ''
+        return str(self.projekt_raumflaeche)
 
 
 class Kostenstammdaten_Elektro(models.Model):
@@ -176,7 +176,7 @@ class Nutzungsstammdaten_SIA2024(Model):
     beleuchtungsstaerke = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.raumnutzung or ''
+        return str(self.raumtemparatur)
       
 class Stammdaten_Technickzentralen_Elektro(models.Model):
     leistung_pro_m2 = FloatField()
