@@ -55,8 +55,7 @@ class Gebaudenutzung(models.Model):
 
     def __str__(self):
        return self.gebaudenutzung
-
-    
+ 
 class Gewerk(models.Model):
     gewerk = CharField(max_length=50)
 
@@ -97,7 +96,7 @@ class ProjektSpezifikationen(models.Model):
     projekt_name = ForeignKey(Projekt, on_delete=models.CASCADE, null=True, blank=True )
     projekt_raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
     projekt_raumflaeche = IntegerField()
-    projekt_raumhoehe = IntegerField()
+    projekt_raumhoehe = FloatField()
     
     def __str__(self):
         return self.projekt_name
