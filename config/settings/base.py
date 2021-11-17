@@ -43,6 +43,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
+
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -69,10 +70,14 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "bootstrap4",
+    "csvImporter",
 ]
 
 LOCAL_APPS = [
     "helios.users.apps.UsersConfig",
+    "helios.projekt.apps.ProjektConfig",
+    "helios.vorstudie.apps.VorstudieConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
