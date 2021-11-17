@@ -10,6 +10,11 @@ class ProjektModelForm(forms.ModelForm):
             "projekt_name",
             "projekt_nummer",
             "projekt_beschreibung",
+            "projekt_dienstleistung",
+            "projekt_nutzung",
+            "projekt_phase",
+            "projekt_branche",
+            "projekt_art", 
             "projekt_nutzung",
                     
             )  

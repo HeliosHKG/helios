@@ -7,32 +7,40 @@ from helios.users.models import User
 
 #Aktuelle Auswahlfelder / Definitionen
 class ProjektDienstleistung(models.Model):
-    auswahl = ["Buero", "Test", "Test2"]
-    projektdienstleistung = CharField(max_length=50, Choises=auswahl)
+    #CSV Import
+    projektdienstleistung = CharField(max_length=50,)
     
     def __str__(self):
         return self.projektdienstleistung
     
 class ProjektPhase(models.Model):
-    projektphase = CharField(max_length=50)
+    CHOICES_PHASE = [("Strategische Planung" , "Strategische Planung"), ("Vorstudie", "Vorstudie"), ("Vorprojekt", "Vorprojekt"), ("Bauprojekt", "Bauprojekt"), ("Ausschreibung", "Ausschreibung"), ("Realisierung", "Realisierung"), ("Bewirtschaftung", "Bewirtschaftung") ]
+    projektphase = CharField(max_length=50, choices = CHOICES_PHASE, default="Vorprojekt")
     
     def __str__(self):
         return self.projektphase
     
 class ProjektBranche(models.Model):
+    #CSV Import
     projektbranche = CharField(max_length=50)
     
     def __str__(self):
         return self.projektbranche
     
 class ProjektArt(models.Model):
-    projektart = CharField(max_length=50)
+    CHOICES_ART = [("Neubau" , "Neubau"), ("Umbau", "Umbau"), ("Sanierung", "Sanierung"), ("Beratung", "Beratung")]
+    projektart = CharField(max_length=50, choices = CHOICES_ART, default="Vorprojekt")
     
     def __str__(self):
         return self.projektart
     
+#Import aus SIA Datei 2024 
 class ProjektNutzung(models.Model):
+    #CSV Import
     projektnutzung = CharField(max_length=50)
+    
+    def __str__(self):
+        return self.projektnutzung
 
 #Projektmodels
 class Projekt(models.Model):
