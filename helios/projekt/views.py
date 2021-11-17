@@ -24,6 +24,7 @@ class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMi
 
     def get_success_url(self):
         return reverse("projekt:list-projekt") 
+        # return reverse("projekt:detail-submission", kwargs={'pk': self.pk})
     
 projekt_create_view = ProjektCreateView.as_view()   
 

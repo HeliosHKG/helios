@@ -64,6 +64,7 @@ class Gebaudenutzung(models.Model):
 
     def __str__(self):
         return self.gebaudenutzung
+    
 class Gewerk(models.Model):
     gewerk = CharField(max_length=50)
 
@@ -71,10 +72,10 @@ class Gewerk(models.Model):
         return self.gewerk
 
 class Gewerk2(models.Model):
-    gewerk = CharField(max_length=50)
+    gewerk2 = CharField(max_length=50)
 
     def __str__(self):
-        return self.gewerk
+        return self.gewerk2
 
 class Klassifizierung(models.Model):
     klassifizierung = CharField(max_length=50)
@@ -113,7 +114,7 @@ class Projekt(models.Model):
     projekt_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.projekt_nummer
+        return self.projekt_name or ''
 
 
 class ProjektSpezifikationen(models.Model):
@@ -121,51 +122,54 @@ class ProjektSpezifikationen(models.Model):
     projekt_name = ForeignKey(Projekt, on_delete=models.CASCADE, null=True, blank=True)
     projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE)
     projekt_gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    projekt_raumflaeche = IntegerField()
+    projekt_raumflaeche = IntegerField(null=True, blank=True)
 
-    projekt_raumhoehe = FloatField()
+    projekt_raumhoehe = FloatField(null=True, blank=True)
     def __str__(self):
-        return self.projekt_name
+        return self.projekt_name or ''
 
 
 class Kostenstammdaten_Elektro(models.Model):
 
-    einheitspreis_pro_m2 = FloatField()
+    einheitspreis_pro_m2 = FloatField(null=True, blank=True)
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True)
     raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE)
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE)
 
     def __str__(self):
-        return self.einheitspreis_pro_m2
+        return str(self.einheitspreis_pro_m2) or ''
 
 
 class Kostenstammdaten_HLKS_Abgabe(models.Model):
-    einheitspreis_pro_m2 = FloatField
+    einheitspreis_pro_m2 = FloatField(null=True, blank=True)
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True)
     raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE, null=True, blank=True)
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE, null=True, blank=True)
     abgabesystem = ForeignKey(Abgabesystem, on_delete=CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.einheitspreis_pro_m2
+        return str(self.einheitspreis_pro_m2) or ''
 
 
 class Kostenstammdaten_HLKS_Erzeugung(models.Model):
-    einheitspreis_pro_KW = FloatField
+    einheitspreis_pro_KW = FloatField(null=True, blank=True)
     erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=CASCADE)
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE)
 
     def __str__(self):
-        return self.einheitspreis_pro_KW
+        return str(self.einheitspreis_pro_KW) or ''
 
 
 class Nutzungsstammdaten_SIA2024(Model):
     raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
     klassifizierung = models.ForeignKey(Klassifizierung, on_delete=SET_NULL,null=True)
     gewerk = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
-    leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField()
-    energie_pro_m2_Klassifizierung_Gewerk2 = FloatField()
-    raumtemparatur = FloatField()
-    luftwechsel_Pro_Person = FloatField()
-    flaeche_Pro_Personenanzahl = FloatField()
-    beleuchtungsstaerke = FloatField()
+    leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
+    energie_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
+    raumtemparatur = FloatField(null=True, blank=True)
+    luftwechsel_Pro_Person = FloatField(null=True, blank=True)
+    flaeche_Pro_Personenanzahl = FloatField(null=True, blank=True)
+    beleuchtungsstaerke = FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return self.raumnutzung or ''
