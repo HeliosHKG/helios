@@ -64,12 +64,13 @@ class Gebaudenutzung(models.Model):
 
     def __str__(self):
         return self.gebaudenutzung
-    
+
 class Gewerk(models.Model):
     gewerk = CharField(max_length=50)
 
     def __str__(self):
         return self.gewerk
+
 
 class Gewerk2(models.Model):
     gewerk2 = CharField(max_length=50)
@@ -77,12 +78,13 @@ class Gewerk2(models.Model):
     def __str__(self):
         return self.gewerk2
 
+
 class Klassifizierung(models.Model):
     klassifizierung = CharField(max_length=50)
 
     def __str__(self):
         return self.klassifizierung
-    
+
 
 class Abgabesystem(models.Model):
     abgabesystem = CharField(max_length=50)
@@ -124,7 +126,9 @@ class ProjektSpezifikationen(models.Model):
     projekt_gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
     projekt_raumflaeche = IntegerField(null=True, blank=True)
 
+
     projekt_raumhoehe = FloatField(null=True, blank=True)
+
     def __str__(self):
         return self.projekt_name or ''
 
@@ -162,7 +166,7 @@ class Kostenstammdaten_HLKS_Erzeugung(models.Model):
 
 class Nutzungsstammdaten_SIA2024(Model):
     raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
-    klassifizierung = models.ForeignKey(Klassifizierung, on_delete=SET_NULL,null=True)
+    klassifizierung = models.ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
     gewerk = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
     leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
     energie_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
@@ -173,3 +177,12 @@ class Nutzungsstammdaten_SIA2024(Model):
 
     def __str__(self):
         return self.raumnutzung or ''
+      
+ class Stammdaten_Technickzentralen_Elektro(models.Model):
+    leistung_pro_m2 = FloatField()
+    Gebaudegroesse = FloatField()
+    zentraltyp = CharField(max_length=50)
+    zentralengroesse = FloatField()
+    
+    
+

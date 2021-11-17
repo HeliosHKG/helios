@@ -4,7 +4,7 @@ from django.db.models.deletion import CASCADE, SET, SET_NULL
 from django.db.models.fields import CharField, FloatField, IntegerField
 from django.db.models.fields.related import ForeignKey
 
-from helios.projekt.models import Abgabesystem, Erzeugungstyp, Gebaudenutzung, Gewerk, Gewerk2, Klassifizierung, Nutzungsstammdaten_SIA2024, Projekt, ProjektSpezifikationen, Raumnutzung
+from helios.projekt.models import Abgabesystem, Erzeugungstyp, Gebaudenutzung, Gewerk, Gewerk2, Klassifizierung, Kostenstammdaten_Elektro, Kostenstammdaten_HLKS_Abgabe, Nutzungsstammdaten_SIA2024, Projekt, ProjektSpezifikationen, Raumnutzung
 
 
 class Input_Investitionskosten(models.Model):
@@ -22,34 +22,39 @@ class Input_Investitionskosten(models.Model):
     def __str__(self):
         return self.projekt or ''
 
-    # def __str__(self):
-    #     self.einheitspreis_pro_m2_hlks_abgabe = self.getSanitaerKostenAbgabe + self.getHeizungsKostenAbgabe + self.getLueftungsKostenAbgabe + self.getKaeltKostenAbgabe
-    #     return self
+    def __str__(self):
+        return self
 
-    # def getElektroKostenAbgabe(self):
-    #     kostenstammdaten_Elektro = Kostenstammdaten_Elektro.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, gebaudenutzung = self.gebaudenutzung)
-    #     pro_m2 = kostenstammdaten_Elektro
-    #     return pro_m2 * self.flaeche
+    def __init__(self):
+        self.einheitspreis_pro_m2_hlks_abgabe = self.getSanitaerKostenAbgabe + self.getHeizungsKostenAbgabe + self.getLueftungsKostenAbgabe + self.getKaeltKostenAbgabe
+        return self
 
-    # def getSanitaerKostenAbgabe(self):
-    #     kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
-    #     pro_m2 = kostenstammdaten_HLKS_Abgabe
-    #     return pro_m2 * self.flaeche
+    def getElektroKostenAbgabe(self):
+        kostenstammdaten_Elektro:Kostenstammdaten_Elektro = Kostenstammdaten_Elektro.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, gebaudenutzung = self.gebaudenutzung)
+        pro_m2 = kostenstammdaten_Elektro.einheitspreis_pro_m2
+        return pro_m2 * self.flaeche
 
-    # def getHeizungsKostenAbgabe(self):
-    #     kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
-    #     pro_kw = kostenstammdaten_HLKS_Abgabe
-    #     return pro_kw
+    def getSanitaerKostenAbgabe(self):
+        kostenstammdaten_HLKS_Abgabe:Kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
+        pro_m2 = kostenstammdaten_HLKS_Abgabe.einheitspreis_pro_m2
+        return pro_m2 * self.flaeche
 
-    # def getLueftungsKostenAbgabe(self):
-    #     kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
-    #     pro_m3h = kostenstammdaten_HLKS_Abgabe
-    #     return pro_m3h
+    def getHeizungsKostenAbgabe(self):
+        kostenstammdaten_HLKS_Abgabe:Kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
+        pro_kw = kostenstammdaten_HLKS_Abgabe.einheitspreis_pro_m2
+        return pro_kw
 
-    # def getKaeltKostenAbgabe(self):
-    #     kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
-    #     pro_kw = kostenstammdaten_HLKS_Abgabe
-    #     return pro_kw
+    def getLueftungsKostenAbgabe(self):
+        kostenstammdaten_HLKS_Abgabe:Kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
+        pro_m3h = kostenstammdaten_HLKS_Abgabe.einheitspreis_pro_m2
+        return pro_m3h
+
+    def getKaeltKostenAbgabe(self):
+        kostenstammdaten_HLKS_Abgabe:Kostenstammdaten_HLKS_Abgabe = Kostenstammdaten_HLKS_Abgabe.objects.get(gewerk = self.gewerk, raumnutzung = self.raumnutzung, abgabesystem = self.abgabesystem, gebaudenutzung = self.gebaudenutzung)
+        pro_kw = kostenstammdaten_HLKS_Abgabe.einheitspreis_pro_m2
+        return pro_kw
+
+
 
 
 class Technikflaechen(models.Model):
@@ -82,6 +87,8 @@ class Leistung(models.Model):
     def __str__(self):
         return self.projekt or ''
 
+
+
     # def __init__(self):
     #     Nutzungsstammdaten_SIA2024.objects.get(
     #         klassifizierung=self.klassifizierung, gewerk2=self.gewerk2)
@@ -90,3 +97,4 @@ class Leistung(models.Model):
     #  #   self.raumtemparatur_Klassifizierung =
     #  #   self.flaeche_pro_Personenanzahl_Klassifizierung =
     #     return self
+
