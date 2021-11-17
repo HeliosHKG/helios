@@ -178,7 +178,7 @@ class Nutzungsstammdaten_SIA2024(Model):
     def __str__(self):
         return self.raumnutzung or ''
       
- class Stammdaten_Technickzentralen_Elektro(models.Model):
+class Stammdaten_Technickzentralen_Elektro(models.Model):
     leistung_pro_m2 = FloatField()
     Gebaudegroesse = FloatField()
     zentraltyp = CharField(max_length=50)
