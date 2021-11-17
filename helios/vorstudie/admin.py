@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+
+
+from .models import Input_Investitionskosten, Technikflaechen, Leistung
+
+admin.site.register(Technikflaechen)
+admin.site.register(Leistung)
+admin.site.register(Input_Investitionskosten)
