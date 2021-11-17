@@ -1,5 +1,5 @@
 from django import forms
-from .models import Projekt
+from .models import Projekt, ProjektSpezifikationen
 
 class ProjektModelForm(forms.ModelForm):
     
@@ -13,3 +13,15 @@ class ProjektModelForm(forms.ModelForm):
             "projekt_nutzung",
                     
             )  
+        
+        
+class ProjektSpezModelForm(forms.ModelForm):
+    
+    class Meta: 
+        model = ProjektSpezifikationen
+        fields = (
+            
+            "projekt_raumnutzung",
+            "projekt_raumflaeche",
+            "projekt_raumflaeche",
+        )
