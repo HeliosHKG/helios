@@ -5,13 +5,7 @@ from django.db.models.fields import CharField, IntegerField, TextField, FloatFie
 from django.db.models.fields.related import ForeignKey
 
 from helios.users.models import User
-from .models import (
-    Gebaudenutzung, 
-    Raumnutzung,
-    Abgabesystem, 
-    Erzeugungstyp, 
-    
-)
+
 
 #Aktuelle Auswahlfelder / Definitionen
 class ProjektDienstleistung(models.Model):
@@ -50,11 +44,36 @@ class ProjektNutzung(models.Model):
     def __str__(self):
         return self.projektnutzung
     
+class Raumnutzung(models.Model):
+    raumnutzung = CharField(max_length=50)
+    
+    def __str__(self):
+        return self.raumnutzung
+
+class Gebaudenutzung(models.Model):
+    gebaudenutzung = CharField(max_length=50)
+
+    def __str__(self):
+       return self.gebaudenutzung
+
+    
 class Gewerk(models.Model):
     gewerk = CharField(max_length=50)
 
     def __str__(self):
         return self.gewerk
+  
+class Abgabesystem(models.Model):
+    abgabesystem = CharField(max_length=50)
+
+    def __str__(self):
+        return self.abgabesystem
+
+class Erzeugungstyp(models.Model):
+    erzeugungstyp = CharField(max_length=50)
+
+    def __str__(self):
+        return self.erzeugungstyp
 
 #Projektmodels
 class Projekt(models.Model):
@@ -73,35 +92,32 @@ class Projekt(models.Model):
     def __str__ (self):
         return self.projekt_nummer
 
-
 class ProjektSpezifikationen(models.Model):
     
     projekt_name = ForeignKey(Projekt, on_delete=models.CASCADE, null=True, blank=True )
-    projekt_raumnutzung = CharField(max_length=50)
+    projekt_raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
     projekt_raumflaeche = IntegerField()
     projekt_raumhoehe = IntegerField()
     
     def __str__(self):
         return self.projekt_name
- 
     
 class Kostenstammdaten_Elektro(models.Model):
    
     einheitspreis_pro_m2 = FloatField()
-    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
-    raumnutzung = ForeignKey(Raumnutzung,choices=Raumnutzung.raumnutzung,on_delete=CASCADE)
+    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True )
+    raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
     gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
 
     def __str__(self):
         return self.einheitspreis_pro_m2
 
-
 class Kostenstammdaten_HLKS_Abgabe(models.Model):
     einheitspreis_pro_m2 = FloatField
-    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
-    raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
-    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
-    abgabesystem = ForeignKey(Abgabesystem,on_delete=CASCADE)
+    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True )
+    raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE, null=True, blank=True )
+    gewerk = ForeignKey(Gewerk,on_delete=CASCADE, null=True, blank=True )
+    abgabesystem = ForeignKey(Abgabesystem,on_delete=CASCADE, null=True, blank=True )
 
     def __str__(self):
         return self.einheitspreis_pro_m2
