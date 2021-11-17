@@ -6,7 +6,7 @@ from django.shortcuts import render, reverse
 from django.views import generic
 from django.db.models import Q
 from .models import Projekt
-from .forms import ProjektModelForm
+from .forms import ProjektModelForm, ProjektSpezModelForm
 
 
 class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
@@ -96,4 +96,25 @@ class ProjektDeleteView(LoginRequiredMixin, generic.DeleteView):
         return queryset
 
 projekt_delete_view = ProjektDeleteView.as_view() 
+
+#projektspezifikation
+
+class ProjektSpezCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
+    template_name = "projekt/dashboard_projektSpez_create.html"
+    form_class = ProjektSpezModelForm   
     
+    
+    def form_valid(self, form):     
+        projekt_pk = self.kwargs['pk']
+        projekt = form.save(commit=False)
+        projekt.projekt_name_id = projekt_pk
+        projekt.save()
+        
+        form.save()
+        
+        return super(ProjektSpezCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("projekt:list-projekt") 
+    
+projekt_createSpez_view = ProjektSpezCreateView.as_view()   

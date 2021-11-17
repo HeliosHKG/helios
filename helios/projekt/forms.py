@@ -28,5 +28,5 @@ class ProjektSpezModelForm(forms.ModelForm):
             
             "projekt_raumnutzung",
             "projekt_raumflaeche",
-            "projekt_raumflaeche",
+            "projekt_raumhoehe",
         )
