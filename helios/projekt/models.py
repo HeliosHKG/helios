@@ -1,9 +1,17 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.db.models.enums import Choices
-from django.db.models.fields import CharField, IntegerField, TextField
+from django.db.models.fields import CharField, IntegerField, TextField, FloatField
 from django.db.models.fields.related import ForeignKey
 
 from helios.users.models import User
+from .models import (
+    Gebaudenutzung, 
+    Raumnutzung,
+    Abgabesystem, 
+    Erzeugungstyp, 
+    
+)
 
 #Aktuelle Auswahlfelder / Definitionen
 class ProjektDienstleistung(models.Model):
@@ -41,6 +49,12 @@ class ProjektNutzung(models.Model):
     
     def __str__(self):
         return self.projektnutzung
+    
+class Gewerk(models.Model):
+    gewerk = CharField(max_length=50)
+
+    def __str__(self):
+        return self.gewerk
 
 #Projektmodels
 class Projekt(models.Model):
@@ -69,4 +83,33 @@ class ProjektSpezifikationen(models.Model):
     
     def __str__(self):
         return self.projekt_name
+ 
     
+class Kostenstammdaten_Elektro(models.Model):
+   
+    einheitspreis_pro_m2 = FloatField()
+    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
+    raumnutzung = ForeignKey(Raumnutzung,choices=Raumnutzung.raumnutzung,on_delete=CASCADE)
+    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
+
+    def __str__(self):
+        return self.einheitspreis_pro_m2
+
+
+class Kostenstammdaten_HLKS_Abgabe(models.Model):
+    einheitspreis_pro_m2 = FloatField
+    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
+    raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
+    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
+    abgabesystem = ForeignKey(Abgabesystem,on_delete=CASCADE)
+
+    def __str__(self):
+        return self.einheitspreis_pro_m2
+
+class Kostenstammdaten_HLKS_Erzeugung(models.Model):
+    einheitspreis_pro_KW = FloatField
+    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=CASCADE)
+    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
+
+    def __str__(self):
+        return self.einheitspreis_pro_KW

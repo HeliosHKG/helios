@@ -5,6 +5,7 @@ from django.db.models.fields import CharField, FloatField, IntegerField
 from django.db.models.fields.related import ForeignKey
 
 from helios.projekt.models import Projekt
+from .models import Gewerk, Kostenstammdaten_Elektro, Kostenstammdaten_HLKS_Abgabe
 
 
 class Raumnutzung(Model):
@@ -25,11 +26,7 @@ class Abgabesystem(Model):
     def __str__(self):
         return self.abgabesystem
 
-class Gewerk(Model):
-    gewerk = CharField(max_length=50)
 
-    def __str__(self):
-        return self.gewerk
 
 class Erzeugungstyp(Model):
     erzeugungstyp = CharField(max_length=50)
@@ -37,32 +34,6 @@ class Erzeugungstyp(Model):
     def __str__(self):
         return self.erzeugungstyp
 
-class Kostenstammdaten_Elektro(Model):
-    einheitspreis_pro_m2 = FloatField
-    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
-    raumnutzung = ForeignKey(Raumnutzung,choices=Raumnutzung.raumnutzung,on_delete=CASCADE)
-    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
-
-    def __str__(self):
-        return self.einheitspreis_pro_m2
-
-class Kostenstammdaten_HLKS_Abgabe(Model):
-    einheitspreis_pro_m2 = FloatField
-    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE)
-    raumnutzung = ForeignKey(Raumnutzung,on_delete=CASCADE)
-    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
-    abgabesystem = ForeignKey(Abgabesystem,on_delete=CASCADE)
-
-    def __str__(self):
-        return self.einheitspreis_pro_m2
-
-class Kostenstammdaten_HLKS_Erzeugung(Model):
-    einheitspreis_pro_KW = FloatField
-    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=CASCADE)
-    gewerk = ForeignKey(Gewerk,on_delete=CASCADE)
-
-    def __str__(self):
-        return self.einheitspreis_pro_KW
 
 
 class Input_Investitionskosten(Model):
