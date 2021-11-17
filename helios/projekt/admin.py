@@ -7,6 +7,7 @@ from .models import (
     ProjektBranche, 
     ProjektArt, 
     ProjektNutzung,
+    Raumnutzung,
 )
 
 admin.site.register(ProjektPhase)
@@ -15,3 +16,4 @@ admin.site.register(ProjektDienstleistung)
 admin.site.register(ProjektBranche)
 admin.site.register(ProjektArt)
 admin.site.register(ProjektNutzung)
+admin.site.register(Raumnutzung)
