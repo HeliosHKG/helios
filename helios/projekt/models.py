@@ -187,8 +187,8 @@ class Projekt(models.Model):
 
 class ProjektSpezifikationen(models.Model):
 
-    projekt_name = ForeignKey(Projekt, on_delete=models.CASCADE, null=True, blank=True)
-    projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE)
+    projekt_name = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
+    projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
     projekt_gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
     projekt_raumflaeche = IntegerField(null=True, blank=True)
 
@@ -202,8 +202,8 @@ class Kostenstammdaten_Elektro(models.Model):
 
     einheitspreis_pro_m2 = FloatField(null=True, blank=True)
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True)
-    raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE)
-    gewerk = ForeignKey(Gewerk, on_delete=CASCADE)
+    raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE, null=True, blank=True)
+    gewerk = ForeignKey(Gewerk, on_delete=CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.einheitspreis_pro_m2) or ''
@@ -254,6 +254,7 @@ class Stammdaten_Technickzentralen_Elektro(models.Model):
     zentraltyp = CharField(max_length=50)
     zentralengroesse = FloatField()
 
+
     def __str__(self):
         return self.leistung_pro_m2
 
@@ -271,3 +272,14 @@ class Technikzentralstammdaten_HLKS(models.Model):
 
     def __str__(self):
         return self.pk or ''
+
+    
+    
+class Csv(models.Model):
+    file_name = models.FileField(upload_to='csvs')
+    uploaded = models.DateTimeField(auto_now_add=True)
+    activated = models.BooleanField(default=False) 
+    
+    def __str__(self):
+        return f"File id: {self.id}"    
+

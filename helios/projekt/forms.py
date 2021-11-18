@@ -1,5 +1,5 @@
 from django import forms
-from .models import Projekt, ProjektSpezifikationen
+from .models import Projekt, ProjektSpezifikationen, Csv
 
 class ProjektModelForm(forms.ModelForm):
     
@@ -30,3 +30,18 @@ class ProjektSpezModelForm(forms.ModelForm):
             "projekt_raumflaeche",
             "projekt_raumhoehe",
         )
+        
+class CsvModelForm(forms.ModelForm):
+    
+    class Meta:
+        model = Csv
+        fields = (  
+                    
+                    'file_name',      
+                  )
+        
+        def __init__(self, *args, **kwargs):
+            request = kwargs.pop("request")
+            projects = Projekt.objects.filter(organisation=request.user.userprofile)
+            super(CsvModelForm, self).__init__(*args, **kwargs)
+            self.fields["projekt_name"].queryset = projects 

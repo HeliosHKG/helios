@@ -19,6 +19,9 @@ from .models import (
     Stammdaten_Technickzentralen_Elektro,
     Technikzentralstammdaten_HLKS,
     Umwandlung,
+    Gebaudenutzung, 
+    Kostenstammdaten_Elektro,
+
 )
 
 admin.site.register(ProjektPhase)
@@ -39,3 +42,6 @@ admin.site.register(Klassifizierung)
 admin.site.register(ProjektSpezifikationen)
 admin.site.register(Stammdaten_Technickzentralen_Elektro)
 admin.site.register(Technikzentralstammdaten_HLKS)
+admin.site.register(Gebaudenutzung)
+admin.site.register(Kostenstammdaten_Elektro)
+
