@@ -5,13 +5,13 @@ from django.db.models.fields import CharField, FloatField, IntegerField
 from django.db.models.fields.related import ForeignKey
 from helios import projekt
 
-from helios.projekt.models import Abgabesystem, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS
+from helios.projekt.models import Abgabesystem_HLKS, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS
 
 
 class Technikflaechen(models.Model):
     projekt = ForeignKey(Projekt, on_delete=SET_NULL, null=True)
-    stammdaten_technikzentrale_elektro = ForeignKey(Stammdaten_Technickzentralen_Elektro, on_delete=SET_NULL, null=True)
-    stammdaten_technikzentrale_hlks = ForeignKey(Technikzentralstammdaten_HLKS, on_delete=SET_NULL, null=True)
+    stammdaten_technikzentrale_elektro = ForeignKey(Stammdaten_Technickzentralen_Elektro, on_delete=SET_NULL,  blank=True, null=True)
+    stammdaten_technikzentrale_hlks = ForeignKey(Technikzentralstammdaten_HLKS, on_delete=SET_NULL, blank=True, null=True)
     leistung_pro_gewerk = FloatField()
     luftwechsel = FloatField()
     gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
@@ -48,7 +48,7 @@ class Investitionskosten(models.Model):
     flaeche = IntegerField()
     leistung = ForeignKey(Leistung, on_delete=SET_NULL, null=True)
     gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    abgabesystem = ForeignKey(Abgabesystem, on_delete=SET_NULL, null=True)
+    abgabesystem = ForeignKey(Abgabesystem_HLKS, on_delete=SET_NULL, null=True)
     einheitspreis_pro_m2 = IntegerField()
     einheitspreis_pro_kw = IntegerField()
     erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=SET_NULL, null=True)
@@ -65,7 +65,7 @@ class Energie(models.Model):
         return self.pk
     
 class Nutzungskosten(models.Model):
-    projekt = ForeignKey(Projekt,on_delete=SET_NULL)
+    projekt = ForeignKey(Projekt,on_delete=SET_NULL, null=True)
 
     def __str__(self):
         return self.pk

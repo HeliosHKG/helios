@@ -3,7 +3,7 @@ from django.db.models.base import Model
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.db.models.enums import Choices
 from django.db.models.fields import CharField, IntegerField, TextField, FloatField
-from django.db.models.fields.related import ForeignKey
+from django.db.models.fields.related import ForeignKey, ManyToManyField
 
 from helios.users.models import User
 
@@ -110,13 +110,14 @@ class Input_Energietraeger(models.Model):
 
     def __str__(self):
         return self.pk
-    
+  
 
 class Umwandlung(models.Model):
     umwandlung = CharField(max_length=50)
     gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    wirkungsgrad = IntegerField()
-    energietraeger= ForeignKey(Energietraeger,on_delete=SET_NULL,null=True)
+    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
+    wirkungsgrad = FloatField()
+    energietraeger = ManyToManyField(Energietraeger, null=True)
 
     def __str__(self):
         return self.umwandlung
@@ -221,10 +222,10 @@ class Kostenstammdaten_HLKS_Abgabe(models.Model):
 
 
 class Kostenstammdaten_HLKS_Erzeugung(models.Model):
-    einheitspreis_pro_KW = FloatField(null=True, blank=True)
-    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL,null=True)
-    gewerk = ForeignKey(Gewerk, on_delete=CASCADE)
-    einheitspreis_pro_m3 = FloatField(null=True)
+    einheitspreis_pro_KW = FloatField(blank=True, null=True)
+    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, blank=True, null=True)
+    gewerk = ForeignKey(Gewerk, on_delete=CASCADE, blank=True, null=True)
+    einheitspreis_pro_m3 = FloatField(blank=True, null=True)
 
     def __str__(self):
         return str(self.einheitspreis_pro_KW) or ''
@@ -243,16 +244,16 @@ class Nutzungsstammdaten_SIA2024(Model):
     beleuchtungsstaerke = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return str(self.raumtemparatur)
+        return str(self.raumtemparatur_sommer)
 
 
 class Stammdaten_Technickzentralen_Elektro(models.Model):
-    leistung_pro_m2_von = FloatField()
-    leistung_pro_m2_bis = FloatField()
-    gebaudegroesse_von = FloatField()
-    gebaudegroesse_bis = FloatField()
+    leistung_pro_m2_von = FloatField(blank=True, null=True)
+    leistung_pro_m2_bis = FloatField(blank=True, null=True)
+    gebaudegroesse_von = FloatField(blank=True, null=True)
+    gebaudegroesse_bis = FloatField(blank=True, null=True)
     zentraltyp = CharField(max_length=50)
-    zentralengroesse = FloatField()
+    zentralengroesse = FloatField(blank=True, null=True)
 
 
     def __str__(self):
