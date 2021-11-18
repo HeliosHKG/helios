@@ -101,7 +101,7 @@
           id="submenu-app" aria-expanded="false">
           <ul class="flex-column nav">
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-sia2024' %}">
                 <span class="sidebar-text">SIA 2024</span>
               </a>
             </li>
@@ -117,7 +117,7 @@
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-abgabesystem' %}">
                 <span class="sidebar-text">Abgabesystem HLKS</span>
               </a>
             </li>
@@ -127,12 +127,12 @@
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-energietraeger' %}">
                 <span class="sidebar-text">Energieträger</span>
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-umwandlung' %}">
                 <span class="sidebar-text">Umwandlung HLKS</span>
               </a>
             </li>
@@ -142,12 +142,12 @@
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-kostenhlks' %}">
                 <span class="sidebar-text">Kosten HLKS</span>
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-kostelhlks-er'%}">
                 <span class="sidebar-text">Kosten HLKS ER</span>
               </a>
             </li>

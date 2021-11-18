@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (
+    Abgabesystem_HLKS,
     Energietraeger,
     Erzeugungstyp,
     Gebaudenutzung,
@@ -21,6 +22,7 @@ from .models import (
     Umwandlung,
     Gebaudenutzung, 
     Kostenstammdaten_Elektro,
+    Kostenstammdaten_HLKS_Abgabe, 
 
 )
 
@@ -42,6 +44,7 @@ admin.site.register(Klassifizierung)
 admin.site.register(ProjektSpezifikationen)
 admin.site.register(Stammdaten_Technickzentralen_Elektro)
 admin.site.register(Technikzentralstammdaten_HLKS)
-admin.site.register(Gebaudenutzung)
+admin.site.register(Abgabesystem_HLKS)
 admin.site.register(Kostenstammdaten_Elektro)
+admin.site.register(Kostenstammdaten_HLKS_Abgabe)
 
