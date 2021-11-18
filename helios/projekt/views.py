@@ -4,9 +4,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, reverse
 from django.views import generic
+import csv
 from django.db.models import Q
-from .models import Projekt
-from .forms import ProjektModelForm, ProjektSpezModelForm
+from .models import (
+    Projekt, 
+    Csv, 
+    Gewerk,
+    Raumnutzung,
+    Gebaudenutzung, 
+    Kostenstammdaten_Elektro, 
+    Abgabesystem, 
+)
+from .forms import ProjektModelForm, ProjektSpezModelForm, CsvModelForm
 
 
 class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
@@ -119,3 +128,233 @@ class ProjektSpezCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessa
         return reverse("projekt:list-projekt") 
     
 projekt_createSpez_view = ProjektSpezCreateView.as_view()   
+
+
+#File Handler
+#Gewerk
+def upload_file_gewerk(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Gewerk.objects.create(
+                        
+                        gewerk = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_gewerk.html' , {'form': form,})
+
+#Stammdaten Raumnutzung
+def upload_file_raumnutzung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Raumnutzung.objects.create(
+                        
+                        raumnutzung = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_raumnutzung.html' , {'form': form,})
+
+#Stammdaten Gebäudenutzung 
+def upload_file_gebauedenutzung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Gebaudenutzung.objects.create(
+                        
+                        gebaudenutzung = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_gebauedenutzung.html' , {'form': form,})
+
+#Stammdaten Kosten Elektro 
+def upload_file_kosten_elektro(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_geb:Gebaudenutzung 
+                    gebauedenutzung = Gebaudenutzung.objects.get(gebaudenutzung = row[1])
+                    
+                    if gebauedenutzung != 0:
+                        res_geb = gebauedenutzung
+                    else: 
+                        pass
+                    
+                    res_raum:Raumnutzung
+                    raumnutzung = Raumnutzung.objects.get(raumnutzung = row[2])
+                    if raumnutzung != 0:
+                        res_raum = raumnutzung
+                    else:
+                        pass
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[3])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    
+                    data = Kostenstammdaten_Elektro.objects.create(
+                        
+                        
+                        
+                        einheitspreis_pro_m2 = row[4],
+                        
+                    )
+                    
+                    data.gebaudenutzung = res_geb
+                    data.gewerk = res_gewerk
+                    data.raumnutzung = res_raum
+                    data.save()
+                    
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_kosten_elektro.html' , {'form': form,})
+
+
+#Stammdaten Abgabesystem 
+def upload_file_kosten_elektro(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_geb:Gebaudenutzung 
+                    gebauedenutzung = Gebaudenutzung.objects.get(gebaudenutzung = row[1])
+                    
+                    if gebauedenutzung != 0:
+                        res_geb = gebauedenutzung
+                    else: 
+                        pass
+                    
+                  
+                    
+                    
+                    data = Abgabesystem.objects.create(
+                        
+                        
+                        
+                        einheitspreis_pro_m2 = row[4],
+                        
+                    )
+                    
+                    data.gebaudenutzung = res_geb
+                    data.gewerk = res_gewerk
+                    data.raumnutzung = res_raum
+                    data.save()
+                    
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_abgabesystem.html' , {'form': form,})
