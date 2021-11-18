@@ -77,7 +77,9 @@ class Technikflaechen(models.Model):
 class Energie(models.Model):
     projekt = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
     klassifizierung = ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
-    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
+    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
+    stammdaten_sia = ForeignKey(Nutzungsstammdaten_SIA2024, on_delete=SET_NULL, null=True, blank=True)
+    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.pk
@@ -91,10 +93,18 @@ class Energie_Variabl(models.Model):
     raumtemparatur_winter = FloatField(null=True)
     beleuchtungsstaerke = FloatField(null=True)
     # berechnete Werte
-    Energie_pro_Gewerk2_Lüftung = FloatField(null=True)
-    Energie_pro_Gewerk2_Beleuchtung = FloatField(null=True)
-    Energie_pro_Gewerk_Heizung = FloatField(null=True)
-    Energie_pro_Gewerk_Kälte = FloatField(null=True)
+    energie_pro_Gewerk2_Lüftung = FloatField(null=True)
+    energie_pro_Gewerk2_Beleuchtung = FloatField(null=True)
+    energie_pro_Gewerk_Heizung = FloatField(null=True)
+    energie_pro_Gewerk_Kälte = FloatField(null=True)
+    treibhausemissionen_pro_gewerk_lueftung = FloatField(blank=True, null=True)
+    treibhausemissionen_pro_gewerk_beleuchtung = FloatField(blank=True, null=True)
+    treibhausemissionen_pro_gewerk_heizung = FloatField(blank=True, null=True)
+    treibhausemissionen_pro_gewerk_kaelte = FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.energie
+
 
 
 class Nutzungskosten(models.Model):
@@ -113,4 +123,16 @@ class Nutzungskosten(models.Model):
 
 
 class KPI(models.Model):
-    projekt = ForeignKey(Projekt, on_delete=SET_NULL, null=True)
+    projekt = ForeignKey(Projekt, on_delete=SET_NULL, blank=True, null=True)
+    leistung = ForeignKey(Leistung, on_delete=SET_NULL, blank=True, null=True)
+    technikflaeche = ForeignKey(Technikflaechen, on_delete=SET_NULL, blank=True, null=True)
+    energie = ForeignKey(Energie, on_delete=SET_NULL, blank=True, null=True)
+    #berechnete Werte
+    technikanteil = FloatField(blank=True, null=True)
+    
+    
+    def __str__(self):
+        return self.pk
+    
+    
+    
