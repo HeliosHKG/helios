@@ -65,6 +65,7 @@ class Gebaudenutzung(models.Model):
     def __str__(self):
         return self.gebaudenutzung
 
+
 class Gewerk(models.Model):
     gewerk = CharField(max_length=50)
 
@@ -86,11 +87,61 @@ class Klassifizierung(models.Model):
         return self.klassifizierung
 
 
-class Abgabesystem(models.Model):
+class Input_Klassifizierung(models.Model):
+    klassifizierung = ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
+    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
+
+    def __str__(self):
+        return self.pk
+
+
+class Energietraeger(models.Model):
+    energietraeger = CharField(max_length=50)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
+    treibhausgasemission=FloatField()
+    nationaler_gew_faktor=FloatField()
+
+    def __str__(self):
+        return self.energietraeger
+
+
+class Input_Energietraeger(models.Model):
+    energietraeger = ForeignKey(Energietraeger, on_delete=SET_NULL, null=True)
+
+    def __str__(self):
+        return self.pk
+    
+
+class Umwandlung(models.Model):
+    umwandlung = CharField(max_length=50)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
+    wirkungsgrad = IntegerField()
+    energietraeger= ForeignKey(Energietraeger,on_delete=SET_NULL,null=True)
+
+    def __str__(self):
+        return self.umwandlung
+
+class Input_Umwandlung(models.Model):
+    umwandlung_Pro_Gewerk=ForeignKey(Umwandlung,on_delete=SET_NULL,null=True)
+
+    def __str__(self):
+        return self.pk
+    
+
+class Abgabesystem_HLKS(models.Model):
     abgabesystem = CharField(max_length=50)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
 
     def __str__(self):
         return self.abgabesystem
+
+
+class Input_Abgabesystem(models.Model):
+    abgabesystem = ForeignKey(Abgabesystem, on_delete=SET_NULL, null=True)
+    gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=SET_NULL, null=True)
+
+    def __str__(self):
+        return self.pk
 
 
 class Erzeugungstyp(models.Model):
@@ -99,6 +150,21 @@ class Erzeugungstyp(models.Model):
     def __str__(self):
         return self.erzeugungstyp
 
+
+class Input_Unterhaltsfaktor(models.Model):
+    unterhaltsfaktor_Pro_Gewerk=FloatField()
+    gewerk=ForeignKey(Gewerk,on_delete=SET_NULL,null=True)
+
+    def __str__(self):
+        return self.unterhaltsfaktor_Pro_Gewerk
+
+class Input_Energiepreise(models.Model):
+    energiepreis_Pro_Energietraeger=FloatField()
+    energietraeger=ForeignKey(Energietraeger,on_delete=SET_NULL,null=True)
+
+    def __str__(self):
+        return self.energiepreis_Pro_Energietraeger    
+    
 # Projektmodels
 
 
@@ -125,7 +191,6 @@ class ProjektSpezifikationen(models.Model):
     projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
     projekt_gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
     projekt_raumflaeche = IntegerField(null=True, blank=True)
-
 
     projekt_raumhoehe = FloatField(null=True, blank=True)
 
@@ -157,8 +222,9 @@ class Kostenstammdaten_HLKS_Abgabe(models.Model):
 
 class Kostenstammdaten_HLKS_Erzeugung(models.Model):
     einheitspreis_pro_KW = FloatField(null=True, blank=True)
-    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=CASCADE)
+    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL,null=True)
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE)
+    einheitspreis_pro_m3 = FloatField(null=True)
 
     def __str__(self):
         return str(self.einheitspreis_pro_KW) or ''
@@ -166,23 +232,47 @@ class Kostenstammdaten_HLKS_Erzeugung(models.Model):
 
 class Nutzungsstammdaten_SIA2024(Model):
     raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
-    klassifizierung = models.ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
-    gewerk = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
-    leistung_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
-    energie_pro_m2_Klassifizierung_Gewerk2 = FloatField(null=True, blank=True)
-    raumtemparatur = FloatField(null=True, blank=True)
+    klassefizierung = models.ForeignKey(Klassifizierung, on_delete=SET_NULL, null=True)
+    gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
+    leistung_pro_m2_Klassefizierung_Gewerk2 = FloatField(null=True, blank=True)
+    energie_pro_m2_Klassefizierung_Gewerk2 = FloatField(null=True, blank=True)
+    raumtemparatur_sommer = FloatField(null=True, blank=True)
+    raumtemparatur_winter = FloatField(null=True, blank=True)
     luftwechsel_Pro_Person = FloatField(null=True, blank=True)
     flaeche_Pro_Personenanzahl = FloatField(null=True, blank=True)
     beleuchtungsstaerke = FloatField(null=True, blank=True)
 
     def __str__(self):
         return str(self.raumtemparatur)
-      
+
+
 class Stammdaten_Technickzentralen_Elektro(models.Model):
-    leistung_pro_m2 = FloatField()
-    Gebaudegroesse = FloatField()
+    leistung_pro_m2_von = FloatField()
+    leistung_pro_m2_bis = FloatField()
+    gebaudegroesse_von = FloatField()
+    gebaudegroesse_bis = FloatField()
     zentraltyp = CharField(max_length=50)
     zentralengroesse = FloatField()
+
+
+    def __str__(self):
+        return self.leistung_pro_m2
+
+
+class Technikzentralstammdaten_HLKS(models.Model):
+    leistung_Pro_Gewerk_Therm_von = FloatField(null=True)
+    leistung_Pro_Gewerk_Therm_bis = FloatField(null=True)
+    luftmenge_von = FloatField(null=True)
+    luftmenge_bis = FloatField(null=True)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
+    umwandlung=ForeignKey(Umwandlung,on_delete=SET_NULL,null=True)
+    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=SET_NULL, null=True)
+    zentralentyp = CharField(max_length=50)
+    zentralengroesse = FloatField()
+
+    def __str__(self):
+        return self.pk or ''
+
     
     
 class Csv(models.Model):
@@ -192,3 +282,4 @@ class Csv(models.Model):
     
     def __str__(self):
         return f"File id: {self.id}"    
+

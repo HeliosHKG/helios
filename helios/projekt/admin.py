@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 from .models import (
+    Energietraeger,
     Erzeugungstyp,
+    Gebaudenutzung,
     Gewerk,
     Klassifizierung, 
     Gewerk2,
@@ -15,8 +17,11 @@ from .models import (
     ProjektSpezifikationen,
     Raumnutzung,
     Stammdaten_Technickzentralen_Elektro,
+    Technikzentralstammdaten_HLKS,
+    Umwandlung,
     Gebaudenutzung, 
     Kostenstammdaten_Elektro,
+
 )
 
 admin.site.register(ProjektPhase)
@@ -27,11 +32,16 @@ admin.site.register(ProjektArt)
 admin.site.register(ProjektNutzung)
 admin.site.register(Raumnutzung)
 admin.site.register(Nutzungsstammdaten_SIA2024)
+admin.site.register(Gebaudenutzung)
+admin.site.register(Energietraeger)
+admin.site.register(Umwandlung)
 admin.site.register(Gewerk2)
 admin.site.register(Gewerk)
 admin.site.register(Erzeugungstyp)
 admin.site.register(Klassifizierung)
 admin.site.register(ProjektSpezifikationen)
 admin.site.register(Stammdaten_Technickzentralen_Elektro)
+admin.site.register(Technikzentralstammdaten_HLKS)
 admin.site.register(Gebaudenutzung)
 admin.site.register(Kostenstammdaten_Elektro)
+
