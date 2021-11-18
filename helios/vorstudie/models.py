@@ -86,6 +86,11 @@ class Leistung(models.Model):
     luftwechsel_pro_Person_Klassifizierung = FloatField(blank=True, null=True)
     flaeche_pro_Personenanzahl_Klassifizierung = FloatField(blank=True, null=True)
     raumtemparatur_Klassifizierung = FloatField(blank=True, null=True)
+    #Berechnete Werte
+    leistung_pro_gewerk = FloatField(blank=True, null=True)
+    personenanzahl_pro_nutzung = FloatField(blank=True, null=True)
+    luftwechsel_pro_nutzung = FloatField(blank=True, null=True)
+    
 
     def __str__(self):
         return str(self.leistung_pro_m2_Klassifizierung_Gewerk2)

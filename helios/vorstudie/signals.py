@@ -27,25 +27,26 @@ def create_leistung(sender, instance, **kwargs):
     
     data_stamm_2024:Nutzungsstammdaten_SIA2024 = Nutzungsstammdaten_SIA2024.objects.get(raumnutzung = nutzung, gewerk = instance.gewerk2, klassifizierung = instance.klassifizierung)
     
-    leistung_pro_m2 = Leistung.objects.filter(projekt_id = projekt_pk).update(leistung_pro_m2_Klassifizierung_Gewerk2=data_stamm_2024.leistung_pro_m2_Klassifizierung_Gewerk2)
+    Leistung.objects.filter(projekt_id = projekt_pk).update(leistung_pro_m2_Klassifizierung_Gewerk2=data_stamm_2024.leistung_pro_m2_Klassifizierung_Gewerk2)
     Leistung.objects.filter(projekt_id = projekt_pk).update(luftwechsel_pro_Person_Klassifizierung = data_stamm_2024.luftwechsel_Pro_Person)
     Leistung.objects.filter(projekt_id = projekt_pk).update(flaeche_pro_Personenanzahl_Klassifizierung = data_stamm_2024.flaeche_Pro_Personenanzahl)
     Leistung.objects.filter(projekt_id = projekt_pk).update(raumtemparatur_Klassifizierung = data_stamm_2024.raumtemparatur)
     
-    #Berechnungen Beispiel 
-    testrechnung = flaeche * leistung_pro_m2 
-    print(flaeche)
-    print(leistung_pro_m2) #dieser Wert kann noch nicht nachvollzogen werden
-    print(testrechnung)
+    leistung_pro_m2 = data_stamm_2024.leistung_pro_m2_Klassifizierung_Gewerk2
+    person_pro_m2 = data_stamm_2024.flaeche_Pro_Personenanzahl
+    luftwechsel_pro_person = data_stamm_2024.luftwechsel_Pro_Person
     
-# example for copy and paste
-# @receiver(post_save, sender=Technikflaechen)
-# def create_technikflaechen(sender, instance, **kwargs):
+    #Berechnung Leistung pro Gewerk
+    res_Leistung_pro_Gewerk = (flaeche * leistung_pro_m2)
+    res_Personanzahl_pro_nutzung = (flaeche / person_pro_m2)
+    res_luftwechsel_pro_nutzung = (res_Personanzahl_pro_nutzung*luftwechsel_pro_person)
     
-#     projekt_pk = instance.projekt_id
+    #Berechnungen Update
     
-#     stammdaten_elektro:Stammdaten_Technickzentralen_Elektro = Stammdaten_Technickzentralen_Elektro.objects.get()
-     
+    Leistung.objects.filter(projekt_id = projekt_pk).update(leistung_pro_gewerk=res_Leistung_pro_Gewerk)
+    Leistung.objects.filter(projekt_id = projekt_pk).update(personenanzahl_pro_nutzung=res_Personanzahl_pro_nutzung)
+    Leistung.objects.filter(projekt_id = projekt_pk).update(luftwechsel_pro_nutzung=res_luftwechsel_pro_nutzung)
+    
     
     
     
