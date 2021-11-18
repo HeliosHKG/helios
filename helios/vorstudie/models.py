@@ -23,7 +23,7 @@ class Leistung(models.Model):
     luftwechsel_pro_nutzung = FloatField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.leistung_pro_m2_Klassifizierung_Gewerk2)
+        return str(self.projekt)
 
 
 class Leistung_variabl(models.Model):
@@ -38,24 +38,28 @@ class Leistung_variabl(models.Model):
     leistung_Pro_Gewerk2_Beleuchtung = FloatField(null=True)
     leistung_Pro_Gewerk_Heizung = FloatField(null=True)
     leistung_Pro_Gewerk_Kaelte = FloatField(null=True)
+    
+    def __str__(self):
+        return str(self.leistung)
 
 
 class Investitionskosten(models.Model):
+    anzeigename = CharField(default = 'invest', max_length=50)
     projekt = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
-    flaeche = FloatField(null=True)
-    leistung = ForeignKey(Leistung, on_delete=SET_NULL, null=True)
-    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True)
-    stammdaten_kosten_hlks_abgabe = FloatField(null=True)
-    stammdaten_kosten_hlks_erzeugung = FloatField(null=True)
-    stammdateb_kosten_elektro = FloatField(null=True)
+    flaeche = FloatField(null=True, blank=True)
+    leistung = ForeignKey(Leistung, on_delete=SET_NULL, null=True, blank=True)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True, blank=True)
+    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True, blank=True)
+    stammdaten_kosten_hlks_abgabe = FloatField(null=True, blank=True)
+    stammdaten_kosten_hlks_erzeugung = FloatField(null=True, blank=True)
+    stammdateb_kosten_elektro = FloatField(null=True, blank=True)
     # berechnete Werte
-    investitionskosten_m2_gewerk = FloatField(null=True)
-    investitionskosten_Kw_Gewerk_Erzeugung = FloatField(null=True)
-    investitionskosten_Kw_Gewerk_Erzeugung2 = FloatField(null=True)
+    investitionskosten_m2_gewerk = FloatField(null=True, blank=True)
+    investitionskosten_Kw_Gewerk_Erzeugung = FloatField(null=True, blank=True)
+    investitionskosten_Kw_Gewerk_Erzeugung2 = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.pk or ''
+        return str(self.anzeigename)
 
 
 class Technikflaechen(models.Model):
@@ -71,7 +75,7 @@ class Technikflaechen(models.Model):
     luftmenge = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.zentralentyp or ''
+        return str(self.leistung_pro_m2) 
 
 
 class Energie(models.Model):
@@ -82,7 +86,7 @@ class Energie(models.Model):
     umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.projekt)
 
 
 class Energie_Variabl(models.Model):
@@ -103,7 +107,7 @@ class Energie_Variabl(models.Model):
     treibhausemissionen_pro_gewerk_kaelte = FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.energie
+        return str(self.energie)
 
 
 
@@ -119,7 +123,7 @@ class Nutzungskosten(models.Model):
     energiekosten_Pro_Gewerk=FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.projekt)
 
 
 class KPI(models.Model):
@@ -132,7 +136,7 @@ class KPI(models.Model):
     
     
     def __str__(self):
-        return self.pk
+        return str(self.projekt)
     
     
     

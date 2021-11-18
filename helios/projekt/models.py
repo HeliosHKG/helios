@@ -190,7 +190,7 @@ class ProjektSpezifikationen(models.Model):
 
     projekt_name = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
     projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
-    projekt_gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
+    projekt_gewerk = ManyToManyField(Gewerk, null=True)
     projekt_raumflaeche = IntegerField(null=True, blank=True)
 
     projekt_raumhoehe = FloatField(null=True, blank=True)
@@ -207,7 +207,7 @@ class Kostenstammdaten_Elektro(models.Model):
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return str(self.einheitspreis_pro_m2) or ''
+        return str(self.einheitspreis_pro_m2)
 
 
 class Kostenstammdaten_HLKS_Abgabe(models.Model):

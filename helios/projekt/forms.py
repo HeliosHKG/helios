@@ -1,6 +1,7 @@
 from django import forms
 from .models import Projekt, ProjektSpezifikationen, Csv
 
+
 class ProjektModelForm(forms.ModelForm):
     
     class Meta:
@@ -29,8 +30,23 @@ class ProjektSpezModelForm(forms.ModelForm):
             "projekt_raumnutzung",
             "projekt_raumflaeche",
             "projekt_raumhoehe",
+            "projekt_gewerk",
         )
-        
+
+#weitere Inputs welche noch benötigt werden
+
+# MODEL: ??             FIELD: pro GEWERK2 eine Klassifiezierung
+# MODEL: ABGABESYSTEM   FIELD: Pro Gewerk ein Abgabesystem
+# MODEL:                FIELD:  Energieträger pro Gewerk
+# MODEL:                FIELD:  Umwandlung pro Gewerk2
+# MODEL:                FIELD:  Unterhalsfaktor pro Gewerk 
+# MODEL:                FIELD: Energiepreis pro Energieträger  
+
+
+
+
+
+
 class CsvModelForm(forms.ModelForm):
     
     class Meta:

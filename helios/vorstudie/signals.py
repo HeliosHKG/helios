@@ -4,14 +4,19 @@ from django.db.models.signals import post_save, post_init
 from django.dispatch import receiver
 
 from helios.projekt.models import (
-    Gewerk2, 
-    Nutzungsstammdaten_SIA2024, 
+    Gebaudenutzung,
+    Gewerk2,
+    Kostenstammdaten_Elektro, 
+    Nutzungsstammdaten_SIA2024,
+    Projekt, 
     ProjektSpezifikationen, 
     Stammdaten_Technickzentralen_Elektro,
+    Gewerk
     
 )
 
 from .models import (
+    Investitionskosten,
     Leistung,
     Technikflaechen,
 )
@@ -46,10 +51,4 @@ def create_leistung(sender, instance, **kwargs):
     Leistung.objects.filter(projekt_id = projekt_pk).update(leistung_pro_gewerk=res_Leistung_pro_Gewerk)
     Leistung.objects.filter(projekt_id = projekt_pk).update(personenanzahl_pro_nutzung=res_Personanzahl_pro_nutzung)
     Leistung.objects.filter(projekt_id = projekt_pk).update(luftwechsel_pro_nutzung=res_luftwechsel_pro_nutzung)
-    
-    
-    
-    
-    
-    
     
