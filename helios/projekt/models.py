@@ -137,7 +137,7 @@ class Abgabesystem_HLKS(models.Model):
 
 
 class Input_Abgabesystem(models.Model):
-    abgabesystem = ForeignKey(Abgabesystem, on_delete=SET_NULL, null=True)
+    abgabesystem = ForeignKey(Abgabesystem_HLKS, on_delete=SET_NULL, null=True)
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=SET_NULL, null=True)
 
     def __str__(self):
@@ -214,7 +214,7 @@ class Kostenstammdaten_HLKS_Abgabe(models.Model):
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=CASCADE, null=True, blank=True)
     raumnutzung = ForeignKey(Raumnutzung, on_delete=CASCADE, null=True, blank=True)
     gewerk = ForeignKey(Gewerk, on_delete=CASCADE, null=True, blank=True)
-    abgabesystem = ForeignKey(Abgabesystem, on_delete=CASCADE, null=True, blank=True)
+    abgabesystem = ForeignKey(Abgabesystem_HLKS, on_delete=CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.einheitspreis_pro_m2) or ''
