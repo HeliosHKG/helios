@@ -257,19 +257,19 @@ class Stammdaten_Technickzentralen_Elektro(models.Model):
 
 
     def __str__(self):
-        return self.leistung_pro_m2
+        return self.zentraltyp
 
 
 class Technikzentralstammdaten_HLKS(models.Model):
-    leistung_Pro_Gewerk_Therm_von = FloatField(null=True)
-    leistung_Pro_Gewerk_Therm_bis = FloatField(null=True)
-    luftmenge_von = FloatField(null=True)
-    luftmenge_bis = FloatField(null=True)
-    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    umwandlung=ForeignKey(Umwandlung,on_delete=SET_NULL,null=True)
-    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=SET_NULL, null=True)
-    zentralentyp = CharField(max_length=50)
-    zentralengroesse = FloatField()
+    leistung_Pro_Gewerk_Therm_von = FloatField(blank=True, null=True)
+    leistung_Pro_Gewerk_Therm_bis = FloatField(blank=True, null=True)
+    luftmenge_von = FloatField(blank=True,null=True)
+    luftmenge_bis = FloatField(blank=True,null=True)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, blank=True,null=True)
+    umwandlung=ForeignKey(Umwandlung,on_delete=SET_NULL,blank=True,null=True)
+    erzeugungstyp = ForeignKey(Erzeugungstyp, on_delete=SET_NULL, blank=True,null=True)
+    zentralentyp = CharField(max_length=50, blank=True,null=True)
+    zentralengroesse = FloatField(blank=True, null=True)
 
     def __str__(self):
         return self.pk or ''

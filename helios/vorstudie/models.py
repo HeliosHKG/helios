@@ -7,7 +7,7 @@ from django.db.models.fields.related import ForeignKey
 from django.utils import tree
 from helios import projekt
 
-from helios.projekt.models import Abgabesystem, Energietraeger, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Nutzungsstammdaten_SIA2024, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS, Umwandlung
+from helios.projekt.models import Energietraeger, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Nutzungsstammdaten_SIA2024, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS, Umwandlung
 
 
 class Leistung(models.Model):
@@ -98,15 +98,15 @@ class Energie_Variabl(models.Model):
 
 
 class Nutzungskosten(models.Model):
-    projekt = ForeignKey(Projekt, on_delete=SET_NULL)
-    energieerzeuger=ForeignKey()
-    gewerk = ForeignKey(Gewerk,on_delete=SET_NULL,null=True)
-    investitionskosten=ForeignKey(Investitionskosten,on_delete=SET_NULL,null=True)
-    unterhaltsfaktor=ForeignKey()
-    energietraeger_Pro_Energietraeger=ForeignKey()
+    projekt = ForeignKey(Projekt, on_delete=SET_NULL, blank=True, null=True)
+    energieerzeuger=FloatField(blank=True, null=True) #TODO Hier den Foreignkey prüfen? nach was?
+    gewerk = ForeignKey(Gewerk,on_delete=SET_NULL,blank=True, null=True)
+    investitionskosten=ForeignKey(Investitionskosten,on_delete=SET_NULL,blank=True, null=True)
+    unterhaltsfaktor=FloatField(blank=True, null=True) #TODO sollte ein Foreignkey sein? zu wem?
+    energietraeger_Pro_Energietraeger=FloatField(blank=True, null=True) #TODO sollte ein Foreignkey sein nach was?
     #berechnete Werte
-    unterhaltskosten_Pro_Gewerk=FloatField()
-    energiekosten_Pro_Gewerk=FloatField()
+    unterhaltskosten_Pro_Gewerk=FloatField(blank=True, null=True)
+    energiekosten_Pro_Gewerk=FloatField(blank=True, null=True)
 
     def __str__(self):
         return self.pk

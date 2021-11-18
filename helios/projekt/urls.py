@@ -20,6 +20,10 @@ from helios.projekt.views import (
     upload_file_kostenhlks_abgabe, 
     upload_file_umwandlung, 
     upload_file_energietraeger, 
+    upload_file_technikzentralen_elektro, 
+    upload_file_technikzentralen_hlks,
+    upload_file_hlks_erzeugung, 
+     
 )
 
 app_name = "projekt"
@@ -43,6 +47,8 @@ urlpatterns = [
     path('upload/kostenhlks', upload_file_kostenhlks_abgabe, name = "upload-file-kostenhlks"),
     path('upload/umwandlung', upload_file_umwandlung, name = "upload-file-umwandlung"),
     path('upload/energietraeger', upload_file_energietraeger, name = "upload-file-energietraeger"),
-    path('upload/kostelhlks_er', upload_file_energietraeger, name = "upload-file-kostelhlks-er"),
-    
+    path('upload/kostelhlks_er', upload_file_hlks_erzeugung, name = "upload-file-kostelhlks-er"),
+    path('upload/zentralen_elektro', upload_file_technikzentralen_elektro, name = "upload-file-technik-elektro"),
+    path('upload/zentralen_hlks', upload_file_technikzentralen_hlks, name = "upload-file-technik-hlks"),
+
 ]

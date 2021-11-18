@@ -157,7 +157,12 @@
               </a>
             </li>
             <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
-              <a class="nav-link" href="/tables-bootstrap-tables.html">
+              <a class="nav-link" href="{% url 'projekt:upload-file-technik-elektro'%}">
+                <span class="sidebar-text">Technik Elektro</span>
+              </a>
+            </li>
+            <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
+              <a class="nav-link" href="{% url 'projekt:upload-file-technik-hlks'%}">
                 <span class="sidebar-text">Technik HLKS</span>
               </a>
             </li>

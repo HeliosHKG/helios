@@ -20,7 +20,9 @@ from .models import (
     Nutzungsstammdaten_SIA2024, 
     Kostenstammdaten_HLKS_Erzeugung,
     Kostenstammdaten_HLKS_Abgabe,
-    Kostenstammdaten_HLKS_Erzeugung, 
+    Kostenstammdaten_HLKS_Erzeugung,
+    Technikzentralstammdaten_HLKS, 
+    Stammdaten_Technickzentralen_Elektro,
     Umwandlung, 
     
     
@@ -612,7 +614,7 @@ def upload_file_energietraeger(request):
     return render (request, 'projekt/stammdaten_energietraeger.html' , {'form': form,})
 
 #Stammdaten Kosten HLKS Erzeugung
-def upload_file_energietraeger(request):  
+def upload_file_hlks_erzeugung(request):  
     
     form = CsvModelForm(request.POST or None, 
                         request.FILES or None) 
@@ -668,3 +670,105 @@ def upload_file_energietraeger(request):
             obj.save()
     
     return render (request, 'projekt/stammdaten_kostenhlks_erzeugung.html' , {'form': form,})
+
+#Stammdaten Technikzentralen Elektro 
+def upload_file_technikzentralen_elektro(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    data = Stammdaten_Technickzentralen_Elektro.objects.create(
+                        
+                        leistung_pro_m2_von = row[1],
+                        leistung_pro_m2_bis = row[2],
+                        gebaudegroesse_von = row[3],
+                        gebaudegroesse_bis = row[4],
+                        zentraltyp = row[5],
+                        zentralengroesse = row[6],
+                        
+                    )
+                    
+                    
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_technikraueme_elektro.html' , {'form': form,})
+
+
+#Stammdaten Technikzentralen HLKS #TODO noch importieren
+def upload_file_technikzentralen_hlks(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[5])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    res_umw:Umwandlung
+                    umwandlung = Umwandlung.objects.get(umwandlung = row[6], gewerk = res_gewerk)
+
+                    if umwandlung != 0:
+                        res_umw = umwandlung
+                    else:
+                        pass
+                    
+                    data = Technikzentralstammdaten_HLKS.objects.create(
+                        
+                        leistung_Pro_Gewerk_Therm_von = row[1],
+                        leistung_Pro_Gewerk_Therm_bis = row[2],
+                        luftmenge_von = row[3],
+                        luftmenge_bis = row[4],
+                        zentralentyp = row[7],
+                        zentralengroesse = row[8],
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.umwandlung = res_umw
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_technikraueme_hlks.html' , {'form': form,})
