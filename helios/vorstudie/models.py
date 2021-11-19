@@ -7,7 +7,7 @@ from django.db.models.fields.related import ForeignKey
 from django.utils import tree
 from helios import projekt
 
-from helios.projekt.models import Energietraeger, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Nutzungsstammdaten_SIA2024, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS, Umwandlung
+from helios.projekt.models import Abgabesystem_HLKS, Energietraeger, Erzeugungstyp, Gewerk, Gewerk2, Klassifizierung, Nutzungsstammdaten_SIA2024, Projekt, Stammdaten_Technickzentralen_Elektro, Technikzentralstammdaten_HLKS, Umwandlung
 
 
 class Leistung(models.Model):
@@ -48,6 +48,7 @@ class Investitionskosten(models.Model):
     projekt = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
     flaeche = FloatField(null=True, blank=True)
     leistung = ForeignKey(Leistung, on_delete=SET_NULL, null=True, blank=True)
+    abgabesystem = ForeignKey(Abgabesystem_HLKS, on_delete=SET_NULL, null=True, blank=True)
     gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True, blank=True)
     umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True, blank=True)
     stammdaten_kosten_hlks_abgabe = FloatField(null=True, blank=True)
@@ -56,20 +57,20 @@ class Investitionskosten(models.Model):
     # berechnete Werte
     investitionskosten_m2_gewerk = FloatField(null=True, blank=True)
     investitionskosten_Kw_Gewerk_Erzeugung = FloatField(null=True, blank=True)
-    investitionskosten_Kw_Gewerk_Erzeugung2 = FloatField(null=True, blank=True)
+    
 
     def __str__(self):
         return str(self.anzeigename)
 
 
 class Technikflaechen(models.Model):
-    projekt = ForeignKey(Projekt, on_delete=SET_NULL, null=True)
-    stammdaten_Technikzentrale_Elektro = ForeignKey(Stammdaten_Technickzentralen_Elektro, on_delete=SET_NULL, null=True)
-    stammdaten_Technikzentrale_Hlks = ForeignKey(Technikzentralstammdaten_HLKS, on_delete=SET_NULL, null=True)
-    leistung_Pro_Gewerk = FloatField()
-    luftwechsel_Pro_Nutzung = FloatField()
-    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, null=True)
-    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, null=True)
+    projekt = ForeignKey(Projekt, on_delete=SET_NULL, blank=True, null=True)
+    stammdaten_Technikzentrale_Elektro = ForeignKey(Stammdaten_Technickzentralen_Elektro, on_delete=SET_NULL,  blank=True, null=True)
+    stammdaten_Technikzentrale_Hlks = ForeignKey(Technikzentralstammdaten_HLKS, on_delete=SET_NULL,  blank=True, null=True)
+    leistung_Pro_Gewerk = FloatField(blank=True, null=True)
+    luftwechsel_Pro_Nutzung = FloatField(blank=True, null=True)
+    gewerk = ForeignKey(Gewerk, on_delete=SET_NULL, blank=True, null=True)
+    umwandlung = ForeignKey(Umwandlung, on_delete=SET_NULL, blank=True, null=True)
     # Berechnete Werte
     leistung_pro_m2 = FloatField(null=True, blank=True)
     luftmenge = FloatField(null=True, blank=True)

@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.base import Model
-from django.db.models.deletion import CASCADE, SET_NULL
+from django.db.models.deletion import CASCADE, SET, SET_NULL
 from django.db.models.enums import Choices
 from django.db.models.fields import CharField, IntegerField, TextField, FloatField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
@@ -190,6 +190,7 @@ class ProjektSpezifikationen(models.Model):
 
     projekt_name = ForeignKey(Projekt, on_delete=CASCADE, null=True, blank=True)
     projekt_raumnutzung = ForeignKey(Raumnutzung, on_delete=SET_NULL, null=True)
+    projekt_gebauedenutzung = ForeignKey(Gebaudenutzung, on_delete=SET, blank=True, null=True)
     projekt_gewerk = ManyToManyField(Gewerk, null=True)
     projekt_raumflaeche = IntegerField(null=True, blank=True)
 
