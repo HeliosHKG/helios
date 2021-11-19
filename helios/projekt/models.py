@@ -92,7 +92,7 @@ class Input_Klassifizierung(models.Model):
     gewerk2 = ForeignKey(Gewerk2, on_delete=SET_NULL, null=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class Energietraeger(models.Model):
@@ -109,7 +109,7 @@ class Input_Energietraeger(models.Model):
     energietraeger = ForeignKey(Energietraeger, on_delete=SET_NULL, null=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
   
 
 class Umwandlung(models.Model):
@@ -126,7 +126,7 @@ class Input_Umwandlung(models.Model):
     umwandlung_Pro_Gewerk=ForeignKey(Umwandlung,on_delete=SET_NULL,null=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
     
 
 class Abgabesystem_HLKS(models.Model):
@@ -142,7 +142,7 @@ class Input_Abgabesystem(models.Model):
     gebaudenutzung = ForeignKey(Gebaudenutzung, on_delete=SET_NULL, null=True)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
 
 class Erzeugungstyp(models.Model):
@@ -157,14 +157,14 @@ class Input_Unterhaltsfaktor(models.Model):
     gewerk=ForeignKey(Gewerk,on_delete=SET_NULL,null=True)
 
     def __str__(self):
-        return self.unterhaltsfaktor_Pro_Gewerk
+        return str(self.unterhaltsfaktor_Pro_Gewerk)
 
 class Input_Energiepreise(models.Model):
     energiepreis_Pro_Energietraeger=FloatField()
     energietraeger=ForeignKey(Energietraeger,on_delete=SET_NULL,null=True)
 
     def __str__(self):
-        return self.energiepreis_Pro_Energietraeger    
+        return str(self.pk)    
     
 # Projektmodels
 
@@ -257,7 +257,7 @@ class Stammdaten_Technickzentralen_Elektro(models.Model):
 
 
     def __str__(self):
-        return self.zentraltyp
+        return str(self.pk)
 
 
 class Technikzentralstammdaten_HLKS(models.Model):
@@ -272,7 +272,7 @@ class Technikzentralstammdaten_HLKS(models.Model):
     zentralengroesse = FloatField(blank=True, null=True)
 
     def __str__(self):
-        return self.pk or ''
+        return str(self.pk)
 
     
     
