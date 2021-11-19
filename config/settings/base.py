@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "bootstrap4",
     "csvImporter",
+    
 ]
 
 LOCAL_APPS = [

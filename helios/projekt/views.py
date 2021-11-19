@@ -4,9 +4,31 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, reverse
 from django.views import generic
+import csv
 from django.db.models import Q
-from .models import Projekt
-from .forms import ProjektModelForm, ProjektSpezModelForm
+from .models import (
+    Energietraeger,
+    Gewerk2,
+    Klassifizierung,
+    Projekt, 
+    Csv, 
+    Gewerk,
+    Raumnutzung,
+    Gebaudenutzung, 
+    Kostenstammdaten_Elektro, 
+    Abgabesystem_HLKS, 
+    Nutzungsstammdaten_SIA2024, 
+    Kostenstammdaten_HLKS_Erzeugung,
+    Kostenstammdaten_HLKS_Abgabe,
+    Kostenstammdaten_HLKS_Erzeugung,
+    Technikzentralstammdaten_HLKS, 
+    Stammdaten_Technickzentralen_Elektro,
+    Umwandlung, 
+    
+    
+    
+)
+from .forms import ProjektModelForm, ProjektSpezModelForm, CsvModelForm
 
 
 class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
@@ -24,6 +46,7 @@ class ProjektCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMi
 
     def get_success_url(self):
         return reverse("projekt:list-projekt") 
+        # return reverse("projekt:spezprojekt-projekt", kwargs={'pk': self.pk})
     
 projekt_create_view = ProjektCreateView.as_view()   
 
@@ -118,3 +141,634 @@ class ProjektSpezCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessa
         return reverse("projekt:list-projekt") 
     
 projekt_createSpez_view = ProjektSpezCreateView.as_view()   
+
+
+#File Handler
+#Gewerk
+def upload_file_gewerk(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Gewerk.objects.create(
+                        
+                        gewerk = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_gewerk.html' , {'form': form,})
+
+#Stammdaten Raumnutzung
+def upload_file_raumnutzung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Raumnutzung.objects.create(
+                        
+                        raumnutzung = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_raumnutzung.html' , {'form': form,})
+
+#Stammdaten Gebäudenutzung 
+def upload_file_gebauedenutzung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    Gebaudenutzung.objects.create(
+                        
+                        gebaudenutzung = row[1],
+                        
+                    )
+
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_gebauedenutzung.html' , {'form': form,})
+
+#Stammdaten Kosten Elektro 
+def upload_file_kosten_elektro(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_geb:Gebaudenutzung 
+                    gebauedenutzung = Gebaudenutzung.objects.get(gebaudenutzung = row[1])
+                    if gebauedenutzung != 0:
+                        res_geb = gebauedenutzung
+                    else: 
+                        pass
+                    
+                    res_raum:Raumnutzung
+                    raumnutzung = Raumnutzung.objects.get(raumnutzung = row[2])
+                    if raumnutzung != 0:
+                        res_raum = raumnutzung
+                    else:
+                        pass
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[3])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    
+                    data = Kostenstammdaten_Elektro.objects.create(
+                        
+                        
+                        
+                        einheitspreis_pro_m2 = row[4],
+                        
+                    )
+                    
+                    data.gebaudenutzung = res_geb
+                    data.gewerk = res_gewerk
+                    data.raumnutzung = res_raum
+                    data.save()
+                    
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_kosten_elektro.html' , {'form': form,})
+
+
+#Stammdaten Abgabesystem 
+def upload_file_abgabesystem(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[1])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    data = Abgabesystem_HLKS.objects.create(
+                        
+                        abgabesystem = row[2],
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_abgabesystem.html' , {'form': form,})
+
+
+#Stammdaten SIA_2024
+def upload_file_sia2024(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk2:Gewerk2
+                    gewerk2 = Gewerk2.objects.get(gewerk2 = row[3])
+                    if gewerk2 != 0:
+                        res_gewerk2 = gewerk2
+                    else:
+                        pass
+                    
+                    res_klass:Klassifizierung
+                    klassifizierung = Klassifizierung.objects.get(klassifizierung = row[2])
+                    if klassifizierung != 0:
+                        res_klass = klassifizierung
+                    else:
+                        pass
+                    
+                    res_raum:Raumnutzung
+                    raumnutzung = Raumnutzung.objects.get(raumnutzung = row[1])
+                    if raumnutzung != 0:
+                        res_raum = raumnutzung
+                    else:
+                        pass
+                    
+                    data = Nutzungsstammdaten_SIA2024.objects.create(
+                        
+                        
+                        leistung_pro_m2_Klassefizierung_Gewerk2 = row[4],
+                        energie_pro_m2_Klassefizierung_Gewerk2 = row[5],
+                        raumtemparatur_sommer = row[6],
+                        raumtemparatur_winter = row[7],
+                        luftwechsel_Pro_Person = row[8],
+                        flaeche_Pro_Personenanzahl = row[9],
+                        beleuchtungsstaerke = row[10],
+                    )
+                    
+                    data.gewerk2 = res_gewerk2
+                    data.klassefizierung = res_klass
+                    data.raumnutzung = res_raum
+                    
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_sia2024.html' , {'form': form,})
+
+#Stammdaten Kosten HLKS
+def upload_file_kostenhlks_abgabe(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[3])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    res_geb:Gebaudenutzung 
+                    gebauedenutzung = Gebaudenutzung.objects.get(gebaudenutzung = row[1])
+                    if gebauedenutzung != 0:
+                        res_geb = gebauedenutzung
+                    else: 
+                        pass
+                    
+                    res_abg:Abgabesystem_HLKS
+                    try:
+                        abgabsystem = Abgabesystem_HLKS.objects.get(abgabesystem = row[4])
+                    except:
+                        pass
+                    if abgabsystem == 'n/a':
+                        pass 
+                    else:
+                        res_abg = abgabsystem
+                        
+                    
+                    res_raum:Raumnutzung
+                    raumnutzung = Raumnutzung.objects.get(raumnutzung = row[2])
+                    if raumnutzung != 0:
+                        res_raum = raumnutzung
+                    else:
+                        pass
+                    
+                    data = Kostenstammdaten_HLKS_Abgabe.objects.create(
+                    
+                        einheitspreis_pro_m2 = row[5],
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.gebaudenutzung = res_geb
+                    data.abgabesystem = res_abg
+                    data.raumnutzung = res_raum
+                    
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_kostenhlks_abgabe.html' , {'form': form,})
+
+#Stammdaten Umwandlung
+def upload_file_umwandlung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[1])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    res_gewerk2:Gewerk2
+                    gewerk2 = Gewerk2.objects.get(gewerk2 = row[2])
+                    if gewerk2 != 0:
+                        res_gewerk2 = gewerk2
+                    else:
+                        pass
+                    
+                    res_energ:Energietraeger
+                    energietraeger = Energietraeger.objects.filter(energietraeger = row[5])
+                    if energietraeger != 0:
+                        res_energ = energietraeger
+                    else:
+                        pass
+                    
+                    data = Umwandlung.objects.create(
+                    
+                        umwandlung = row[3],
+                        wirkungsgrad = row[4],
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.energietraeger.set(res_energ)
+                    data.gewerk2 = res_gewerk2
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_umwandlung.html' , {'form': form,})
+
+#Stammdaten Energieträger
+def upload_file_energietraeger(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[1])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    data = Energietraeger.objects.create(
+                    
+                        energietraeger = row[2],
+                        treibhausgasemission = row[3],
+                        nationaler_gew_faktor = row[4],
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_energietraeger.html' , {'form': form,})
+
+#Stammdaten Kosten HLKS Erzeugung
+def upload_file_hlks_erzeugung(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[1])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    
+                    
+                    res_umw:Umwandlung
+                    umwandlung = Umwandlung.objects.get(umwandlung = row[2], gewerk = res_gewerk)
+
+                    if umwandlung != 0:
+                        res_umw = umwandlung
+                    else:
+                        pass
+                    
+                    data = Kostenstammdaten_HLKS_Erzeugung.objects.create(
+                    
+                        einheitspreis_pro_KW = row[3],
+                        einheitspreis_pro_m3 = row[4],
+                        
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.umwandlung = res_umw
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_kostenhlks_erzeugung.html' , {'form': form,})
+
+#Stammdaten Technikzentralen Elektro 
+def upload_file_technikzentralen_elektro(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    data = Stammdaten_Technickzentralen_Elektro.objects.create(
+                        
+                        leistung_pro_m2_von = row[1],
+                        leistung_pro_m2_bis = row[2],
+                        gebaudegroesse_von = row[3],
+                        gebaudegroesse_bis = row[4],
+                        zentraltyp = row[5],
+                        zentralengroesse = row[6],
+                        
+                    )
+                    
+                    
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_technikraueme_elektro.html' , {'form': form,})
+
+
+#Stammdaten Technikzentralen HLKS #TODO noch importieren
+def upload_file_technikzentralen_hlks(request):  
+    
+    form = CsvModelForm(request.POST or None, 
+                        request.FILES or None) 
+    
+    if form.is_valid():
+        form.save()
+        form = CsvModelForm()
+        obj = Csv.objects.get(activated=False)
+        
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            
+            for i, row in enumerate(reader):
+                if i==0:
+                    pass
+                    
+                else:
+                    row = "".join(row)
+                    row = row.replace(" ", "")
+                    row = row.replace(";", " ")
+                    row = row.split()
+                    
+                    res_gewerk:Gewerk
+                    gewerk = Gewerk.objects.get(gewerk = row[5])
+                    if gewerk != 0:
+                        res_gewerk = gewerk
+                    else:
+                        pass
+                    
+                    res_umw:Umwandlung
+                    umwandlung = Umwandlung.objects.get(umwandlung = row[6], gewerk = res_gewerk)
+
+                    if umwandlung != 0:
+                        res_umw = umwandlung
+                    else:
+                        pass
+                    
+                    data = Technikzentralstammdaten_HLKS.objects.create(
+                        
+                        leistung_Pro_Gewerk_Therm_von = row[1],
+                        leistung_Pro_Gewerk_Therm_bis = row[2],
+                        luftmenge_von = row[3],
+                        luftmenge_bis = row[4],
+                        zentralentyp = row[7],
+                        zentralengroesse = row[8],
+                        
+                    )
+                    
+                    data.gewerk = res_gewerk
+                    data.umwandlung = res_umw
+                    data.save()
+                    
+            obj.activated = True
+            obj.save()
+    
+    return render (request, 'projekt/stammdaten_technikraueme_hlks.html' , {'form': form,})
