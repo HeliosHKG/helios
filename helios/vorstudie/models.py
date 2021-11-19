@@ -75,7 +75,7 @@ class Technikflaechen(models.Model):
     luftmenge = FloatField(null=True, blank=True)
 
     def __str__(self):
-        return str(self.leistung_pro_m2) 
+        return str(self.pk) 
 
 
 class Energie(models.Model):

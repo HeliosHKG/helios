@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from helios.vorstudie.forms import (
     LeistungModelForm,
     InvestitionskostenModelForm, 
+    TechnikflaechenModelForm,
+    EnergieModelForm, 
+    KPIModelForm
 )
 
 
@@ -48,9 +51,63 @@ class InvestitionskostenCreateView(LoginRequiredMixin, generic.CreateView, Succe
         projekt.save()
         form.save()
         
-        return super(LeistungCreateView, self).form_valid(form)
+        return super(InvestitionskostenCreateView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse("projekt:list-projekt") #Return noch definieren
     
 investitionskosten_create_view = InvestitionskostenCreateView.as_view()
+
+# Technikflaechen
+class TechnikflaechenCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
+    template_name = "vorstudie/dashboard_technikflaechen_create.html"
+    form_class = TechnikflaechenModelForm   
+    
+    def form_valid(self, form):     
+        projekt = form.save(commit=False)
+        projekt.projekt_ersteller = self.request.user
+        projekt.save()
+        form.save()
+        
+        return super(TechnikflaechenCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("projekt:list-projekt") #Return noch definieren
+    
+technikflaechen_create_view = TechnikflaechenCreateView.as_view()
+
+# Energien
+class EnergieCreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
+    template_name = "vorstudie/dashboard_energie_create.html"
+    form_class = EnergieModelForm   
+    
+    def form_valid(self, form):     
+        projekt = form.save(commit=False)
+        projekt.projekt_ersteller = self.request.user
+        projekt.save()
+        form.save()
+        
+        return super(EnergieCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("projekt:list-projekt") #Return noch definieren
+    
+energie_create_view = EnergieCreateView.as_view()
+
+# KPI
+class KPICreateView(LoginRequiredMixin, generic.CreateView, SuccessMessageMixin):
+    template_name = "vorstudie/dashboard_kpi_create.html"
+    form_class = KPIModelForm   
+    
+    def form_valid(self, form):     
+        projekt = form.save(commit=False)
+        projekt.projekt_ersteller = self.request.user
+        projekt.save()
+        form.save()
+        
+        return super(KPICreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("projekt:list-projekt") #Return noch definieren
+    
+kpi_create_view = KPICreateView.as_view()
